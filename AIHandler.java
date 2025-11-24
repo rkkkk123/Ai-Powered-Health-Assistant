@@ -31,7 +31,7 @@ public class AIHandler {
     }
 
     private String getRealAIAdvice(String symptoms) {
-        String apiKey = "AIzaSyD08RtEdm1MEBaoXWVqOqNG9BNBC0VjTEs"; // Integrated User API Key
+        String apiKey = ""; // Integrated User API Key
         String apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-latest:generateContent?key=" + apiKey;
 
         try {
@@ -103,3 +103,4 @@ public class AIHandler {
         }
     }
 }
+
