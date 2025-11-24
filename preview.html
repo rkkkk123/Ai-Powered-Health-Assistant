@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Health Assistant (Preview Mode)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Add some specific styles for the preview mode to indicate it's a simulation */
+        .preview-badge {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #ff9800;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .loading {
+            display: none;
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="preview-badge">Preview Mode (No Backend)</div>
+
+    <div class="container">
+        <div class="header">
+            <h1>AI Health Assistant</h1>
+            <p style="margin: 5px 0 0; font-size: 14px; opacity: 0.9;">Your Virtual Medical Companion</p>
+        </div>
+
+        <div class="content">
+            <div class="main-panel">
+                <form id="healthForm" onsubmit="handleAnalyze(event)">
+                    <label for="symptoms"
+                        style="display: block; margin-bottom: 10px; font-weight: 600; color: #333;">Describe your
+                        symptoms:</label>
+                    <textarea id="symptoms" name="symptoms" placeholder="E.g., I have a high fever and a headache..."
+                        required></textarea>
+                    <button type="submit" class="btn-submit">Get AI Recommendation</button>
+                </form>
+
+                <div id="loading" class="loading">Dr. AI is analyzing your symptoms...</div>
+
+                <div id="resultCard" class="prescription-card" style="display: none;">
+                    <h3>Dr. AI Recommendation</h3>
+                    <p id="adviceText" style="line-height: 1.6; color: #333;"></p>
+                </div>
+            </div>
+
+            <div class="history-panel">
+                <span class="history-title">Recent Consultations</span>
+                <div id="historyList">
+                    <p id="emptyHistory" style="color: #999; font-style: italic; font-size: 13px;">No recent history.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function handleAnalyze(event) {
+            event.preventDefault();
+
+            const symptoms = document.getElementById('symptoms').value;
+            const loading = document.getElementById('loading');
+            const resultCard = document.getElementById('resultCard');
+            const adviceText = document.getElementById('adviceText');
+            const historyList = document.getElementById('historyList');
+            const emptyHistory = document.getElementById('emptyHistory');
+
+            // Show loading state
+            loading.style.display = 'block';
+            resultCard.style.display = 'none';
+
+            // Simulate network delay
+            setTimeout(() => {
+                loading.style.display = 'none';
+                resultCard.style.display = 'block';
+
+                // Simulate AI Logic
+                let advice = "";
+                const lowerSymptoms = symptoms.toLowerCase();
+
+                if (lowerSymptoms.includes("headache") || lowerSymptoms.includes("migraine")) {
+                    advice = "It sounds like you might be experiencing a tension headache or migraine. \n\n**Recommendation:**\n1. Rest in a quiet, dark room.\n2. Stay hydrated.\n3. Consider over-the-counter pain relief like Ibuprofen or Acetaminophen if you have no allergies.\n\n*If symptoms persist or vision changes occur, consult a doctor immediately.*";
+                } else if (lowerSymptoms.includes("fever") || lowerSymptoms.includes("hot")) {
+                    advice = "You may be fighting a viral infection or flu. \n\n**Recommendation:**\n1. Monitor your temperature regularly.\n2. Drink plenty of fluids/electrolytes.\n3. Rest is crucial.\n\n*Seek medical attention if fever exceeds 39°C (102°F) or lasts more than 3 days.*";
+                } else if (lowerSymptoms.includes("stomach") || lowerSymptoms.includes("pain")) {
+                    advice = "Abdominal pain can have many causes. \n\n**Recommendation:**\n1. Avoid heavy or spicy foods.\n2. Try ginger tea or peppermint for nausea.\n3. Use a heating pad for comfort.\n\n*If pain is severe or accompanied by vomiting, please visit the ER.*";
+                } else {
+                    advice = "Based on your description, it is important to monitor these symptoms closely. \n\n**Recommendation:**\n1. Maintain a log of your symptoms.\n2. Ensure you are well-rested and hydrated.\n3. If you feel worse, please consult a healthcare professional directly.\n\n*This AI provides general advice and is not a substitute for professional medical diagnosis.*";
+                }
+
+                adviceText.innerText = advice;
+
+                // Update History
+                if (emptyHistory) emptyHistory.style.display = 'none';
+
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerText = new Date().toLocaleTimeString() + ": " + symptoms.substring(0, 30) + (symptoms.length > 30 ? "..." : "");
+
+                // Insert at the top
+                historyList.insertBefore(historyItem, historyList.firstChild);
+
+            }, 1500); // 1.5 second simulated delay
+        }
+    </script>
+
+</body>
+
+</html>
